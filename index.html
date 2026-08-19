@@ -19,28 +19,28 @@
       margin: 0;
       padding: 0;
       width: 100%;
-      min-height: 100%;
+      height: 100%;
     }
 
     body {
       background: #636E3B;
-      overflow-x: hidden;
-      overflow-y: auto;
+      overflow: hidden;
     }
 
     #page {
       width: 100%;
-      min-height: 100vh;
+      height: 100vh;
+      height: 100dvh;
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding-top: 40px;
-      padding-bottom: 150px;
+      gap: clamp(12px, 3vh, 35px);
+      padding: clamp(12px, 3vh, 40px) clamp(12px, 3vw, 32px);
     }
 
     #game-logo {
       width: min(420px, 45vw);
-      margin: 0 auto 35px auto;
+      margin: 0 auto;
       flex-shrink: 0;
       position: relative;
       z-index: 20;
@@ -53,10 +53,20 @@
       image-rendering: pixelated;
     }
 
+    #game-stage {
+      width: 100%;
+      flex: 1 1 auto;
+      min-height: 0;
+      display: grid;
+      place-items: center;
+      container-type: size;
+    }
+
     #unity-container {
       position: relative !important;
-      width: 100vw !important;
-      height: 100vh !important;
+      width: min(100cqw, 160cqh) !important;
+      height: min(100cqh, 62.5cqw) !important;
+      aspect-ratio: 8 / 5;
       margin: 0 auto !important;
       padding: 0 !important;
       left: auto !important;
@@ -64,21 +74,21 @@
       top: auto !important;
       bottom: auto !important;
       transform: none !important;
-      display: flex !important;
-      justify-content: center !important;
-      align-items: center !important;
+      display: block;
       flex-shrink: 0;
       z-index: 1;
     }
 
     #unity-canvas {
-      width: 100vw !important;
-      height: 100vh !important;
-      aspect-ratio: 16 / 9;
-      object-fit: contain;
+      position: absolute !important;
+      left: 0 !important;
+      top: 0 !important;
+      width: 100% !important;
+      height: 100% !important;
       display: block !important;
       margin: 0 !important;
       padding: 0 !important;
+      object-fit: contain;
     }
 
     #unity-loading-bar {
@@ -129,32 +139,34 @@
       <img src="images/nunchicochi_logo.png" alt="눈치코치">
     </div>
 
-    <div id="unity-container">
+    <div id="game-stage">
+      <div id="unity-container">
 
-      <canvas
-        id="unity-canvas"
-        width="1920"
-        height="1080"
-        tabindex="-1">
-      </canvas>
+        <canvas
+          id="unity-canvas"
+          width="960"
+          height="600"
+          tabindex="-1">
+        </canvas>
 
-      <div id="unity-loading-bar">
-        <div id="unity-logo"></div>
-        <div id="unity-progress-bar-empty">
-          <div id="unity-progress-bar-full"></div>
+        <div id="unity-loading-bar">
+          <div id="unity-logo"></div>
+          <div id="unity-progress-bar-empty">
+            <div id="unity-progress-bar-full"></div>
+          </div>
         </div>
-      </div>
 
-      <div id="unity-warning"></div>
+        <div id="unity-warning"></div>
 
-      <div id="unity-footer">
-        <div id="unity-webgl-logo"></div>
-        <div id="unity-fullscreen-button"></div>
-        <div id="unity-build-title">
-          nunchicochi
+        <div id="unity-footer">
+          <div id="unity-webgl-logo"></div>
+          <div id="unity-fullscreen-button"></div>
+          <div id="unity-build-title">
+            nunchicochi
+          </div>
         </div>
-      </div>
 
+      </div>
     </div>
 
   </div>
@@ -241,6 +253,9 @@
       productVersion:
         "1.0",
 
+      matchWebGLToCanvasSize:
+        false,
+
       showBanner:
         unityShowBanner
     };
@@ -270,8 +285,8 @@
         "unity-mobile";
 
     } else {
-      canvas.style.width = "100vw";
-      canvas.style.height = "100vh";
+      canvas.style.width = "100%";
+      canvas.style.height = "100%";
     }
 
     loadingBar.style.display =
